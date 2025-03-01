@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,43 +9,27 @@
 <body class="container mt-5">
 
     <h2>User Login</h2>
-    <form id="login-form">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
         <div class="mb-3">
-            <label for="login-username">Username</label>
-            <input type="text" id="login-username" class="form-control" required>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" class="form-control" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-success">Login</button>
     </form>
 
     <p class="mt-3">Don't have an account? <a href="{% url 'register_page' %}">Register here</a></p>
-
-    <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-
-            fetch('/api/token/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.access) {
-                    localStorage.setItem('token', data.access);  // Store token
-                    alert("Login successful!");
-                    window.location.href = "/tasks/";  // Redirect to tasks
-                } else {
-                    alert("Invalid credentials.");
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>
