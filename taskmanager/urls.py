@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from rest_framework.routers import DefaultRouter
+from tasks.views import TaskViewSet
+
+# 🔹 Definir el router aquí para mover la API fuera de 'tasks/'
+router = DefaultRouter()
+router.register(r'tasks', TaskViewSet)  # La API estará en '/api/tasks/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tasks/', include('tasks.urls')), 
+    path('api/', include(router.urls)),
     path('', RedirectView.as_view(pattern_name='task_list', permanent=True)),
 ]

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Nuestra nueva app
-    'tasks',
+    'tasks', # Nuestra app de tareas
+    'rest_framework',  # Django REST Framework
 ]
 
 MIDDLEWARE = [
