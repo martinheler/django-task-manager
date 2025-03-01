@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from tasks.views import TaskViewSet, RegisterUserView
+from tasks.views import TaskViewSet, RegisterUserView, login_page
 
 # 🔹 Definir el router aquí para mover la API fuera de 'tasks/'
 router = DefaultRouter()
@@ -29,7 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tasks/', include('tasks.urls')), 
     path('api/', include(router.urls)),
-    path('', RedirectView.as_view(pattern_name='task_list', permanent=True)),
+    path('', login_page, name='home'),
     path('api/register/', RegisterUserView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from .forms import TaskForm
 from .serializers import TaskSerializer, UserSerializer
 from rest_framework import viewsets, permissions, generics
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 
 # 📌 1️⃣ Ver lista de tareas
 def task_list(request):
@@ -34,6 +37,18 @@ def task_delete(request, task_id):
         task.delete()
         return redirect('task_list')
     return render(request, 'tasks/task_confirm_delete.html', {'task': task})  # ✅ Se pasa la tarea correcta
+
+def register_page(request):
+    return render(request, 'tasks/register.html')
+
+def login_page(request):
+    """
+    Muestra la página de login. Si el usuario ya está autenticado, lo redirige a /tasks/.
+    """
+    if request.user.is_authenticated:
+        return redirect('task_list')  # 🔹 Si ya está autenticado, va a /tasks/
+    
+    return render(request, 'tasks/login.html')  # 🔹 Si no, muestra la página de login
 
 # 📌 5️⃣ API con Django REST Framework (DRF)
 class TaskViewSet(viewsets.ModelViewSet):
