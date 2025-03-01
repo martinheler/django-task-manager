@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from tasks.views import TaskViewSet
 
 # 🔹 Definir el router aquí para mover la API fuera de 'tasks/'
@@ -29,4 +30,6 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')), 
     path('api/', include(router.urls)),
     path('', RedirectView.as_view(pattern_name='task_list', permanent=True)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
 from .forms import TaskForm
 from .serializers import TaskSerializer
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
 # 📌 1️⃣ Ver lista de tareas
 def task_list(request):
@@ -41,3 +41,4 @@ class TaskViewSet(viewsets.ModelViewSet):
     """
     queryset = Task.objects.all()  # Obtiene todas las tareas
     serializer_class = TaskSerializer  # Usa el serializador para convertir los datos
+    permission_classes = [permissions.IsAuthenticated]  # 🔹 Protegemos la API

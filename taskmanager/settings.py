@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Nuestra nueva app
     'tasks', # Nuestra app de tareas
     'rest_framework',  # Django REST Framework
+    'rest_framework_simplejwt',  # JWT Authentication
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # 🔹 JWT para autenticación
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # 🔹 Solo usuarios autenticados pueden acceder
+    ),
+}
