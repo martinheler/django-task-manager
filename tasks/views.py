@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
+from django.contrib.auth.models import User
 from .forms import TaskForm
-from .serializers import TaskSerializer
-from rest_framework import viewsets, permissions
+from .serializers import TaskSerializer, UserSerializer
+from rest_framework import viewsets, permissions, generics
 
 # 📌 1️⃣ Ver lista de tareas
 def task_list(request):
@@ -39,6 +40,22 @@ class TaskViewSet(viewsets.ModelViewSet):
     """
     API REST para gestionar tareas
     """
-    queryset = Task.objects.all()  # Obtiene todas las tareas
+
+    def get_queryset(self):
+        """ Ensure users only see their own tasks """
+        return Task.objects.filter(user=self.request.user)  # 🔹 Filter by logged-in user
+
+    def perform_create(self, serializer):
+        """ Assign the task to the authenticated user """
+        serializer.save(user=self.request.user)  # 🔹 Assigns task to logged-in user
+    
     serializer_class = TaskSerializer  # Usa el serializador para convertir los datos
     permission_classes = [permissions.IsAuthenticated]  # 🔹 Protegemos la API
+
+class RegisterUserView(generics.CreateAPIView):
+    """
+    API endpoint to register new users.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
