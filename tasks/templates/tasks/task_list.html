@@ -11,7 +11,11 @@
 
     <div class="container mt-4">
         <h1 class="text-center mb-4">📋 Gestor de Tareas</h1>
-
+        <div class="text-end mb-3">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout_page' %}" class="btn btn-danger">🚪 Cerrar Sesión</a>
+            {% endif %}
+        </div>
         <!-- Botón para crear nueva tarea -->
         <div class="text-center mb-3">
             <a href="{% url 'task_create' %}" class="btn btn-primary">➕ Nueva Tarea</a>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from .forms import TaskForm
 from .serializers import TaskSerializer, UserSerializer
 from rest_framework import viewsets, permissions, generics
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
@@ -71,6 +71,10 @@ def login_page(request):
             messages.error(request, "Invalid username or password")  # Mensaje de error
 
     return render(request, 'tasks/login.html')  # Renderizar el formulario de login
+
+def logout_view(request):
+    logout(request)  # 🔹 Cierra la sesión del usuario
+    return redirect('login_page')  # 🔹 Redirige a la página de login
 
 # 📌 5️⃣ API con Django REST Framework (DRF)
 class TaskViewSet(viewsets.ModelViewSet):
